@@ -8,6 +8,12 @@ MIN_SERVICE, MAX_SERVICE = 1.0, 4.0
 
 
 def simulate(rng):
+    _, waits = simulate_with_arrivals(rng)
+    return waits
+
+
+def simulate_with_arrivals(rng):
+    """Return each customer's arrival time (minutes after opening) and wait."""
     # Draw more gaps than needed, then keep the arrivals that fall before closing.
     expected = int(OPEN_MINUTES / MEAN_INTERARRIVAL)
     gaps = rng.exponential(MEAN_INTERARRIVAL, size=expected * 3)
@@ -25,7 +31,7 @@ def simulate(rng):
         waits[i] = start - arrival
         barista_free_at = start + service
 
-    return waits
+    return arrivals, waits
 
 
 def main():
